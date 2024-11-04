@@ -42,6 +42,6 @@ pub fn start() -> Unit {
   // @wasm4.set_palette(2, @wasm4.rgb(0xaa337f)) // 陈玫红 Maximum Red Purple
   // @wasm4.set_palette(3, @wasm4.rgb(0xd4392e)) // 茜红
   // @wasm4.set_palette(4, @wasm4.rgb(0x898f92)) //
-
+//hhhhhhhhhsyfhhhhhhhhh
 }
 
