@@ -36,7 +36,7 @@ pub fn update() -> Unit {
   @wasm4.rect(pos.x, pos.y, 80, 80)
 }
 pub fn start() -> Unit {
-// @wasm4.trace("hello world");
+@wasm4.trace("hello world");
   // @wasm4.trace("Hello world!");
   // @wasm4.set_palette(1, @wasm4.rgb(0x282e30)) // 暗岩灰
   // @wasm4.set_palette(2, @wasm4.rgb(0xaa337f)) // 陈玫红 Maximum Red Purple
