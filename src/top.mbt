@@ -56,3 +56,110 @@
 
 // }
 
+
+//五子棋开始编写处
+// 定义游戏常量和变量
+let screen_size : Int = 160
+let cell_size : Int = 16
+let board_size : Int = 15
+let mut board = @Array.init(board_size * board_size, 0) // 0: empty, 1: player1, 2: player2
+
+// Draw the game board
+pub fn draw_board() -> Unit {
+  for y in 0..board_size {
+    for x in 0..board_size {
+      let cell_value = board[y * board_size + x]
+      if cell_value == 1 {
+        @wasm4.set_draw_colors(0x0U, 0x4U) // Player 1 color
+        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+      } else if cell_value == 2 {
+        @wasm4.set_draw_colors(0x0U, 0x1U) // Player 2 color
+        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+      }
+      @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size) // Grid lines
+    }
+  }
+}
+
+// Check if there is a winner
+pub fn check_winner() -> Int {
+  for y in 0..board_size {
+    for x in 0..board_size {
+      let cell_value = board[y * board_size + x]
+      if cell_value != 0 {
+        // Horizontal check
+        if x + 4 < board_size {
+          if board[y * board_size + x] == board[y * board_size + x + 1] &&
+             board[y * board_size + x] == board[y * board_size + x + 2] &&
+             board[y * board_size + x] == board[y * board_size + x + 3] &&
+             board[y * board_size + x] == board[y * board_size + x + 4] {
+            return cell_value
+          }
+        }
+        // Vertical check
+        if y + 4 < board_size {
+          if board[y * board_size + x] == board[(y + 1) * board_size + x] &&
+             board[y * board_size + x] == board[(y + 2) * board_size + x] &&
+             board[y * board_size + x] == board[(y + 3) * board_size + x] &&
+             board[y * board_size + x] == board[(y + 4) * board_size + x] {
+            return cell_value
+          }
+        }
+        // Diagonal check (top-left to bottom-right)
+        if x + 4 < board_size && y + 4 < board_size {
+          if board[y * board_size + x] == board[(y + 1) * board_size + x + 1] &&
+             board[y * board_size + x] == board[(y + 2) * board_size + x + 2] &&
+             board[y * board_size + x] == board[(y + 3) * board_size + x + 3] &&
+             board[y * board_size + x] == board[(y + 4) * board_size + x + 4] {
+            return cell_value
+          }
+        }
+        // Diagonal check (bottom-left to top-right)
+        if x + 4 < board_size && y - 4 >= 0 {
+          if board[y * board_size + x] == board[(y - 1) * board_size + x + 1] &&
+             board[y * board_size + x] == board[(y - 2) * board_size + x + 2] &&
+             board[y * board_size + x] == board[(y - 3) * board_size + x + 3] &&
+             board[y * board_size + x] == board[(y - 4) * board_size + x + 4] {
+            return cell_value
+          }
+        }
+      }
+    }
+  }
+  return 0  // No winner
+}
+
+// Handle player moves
+pub fn make_move(x : Int, y : Int, player : Int) -> Unit {
+  if board[y * board_size + x] == 0 { // Only place the move if the cell is empty
+    board[y * board_size + x] = player
+  }
+}
+
+// Game logic update
+pub fn update() -> Unit {
+  let input = @wasm4.get_gamepad()
+
+  // Player 1 controls (for simplicity, move with up/down buttons)
+  if input.button_up {
+    make_move(7, 7, 1)  // Example move for player 1 at (7,7)
+  }
+
+  // Player 2 controls
+  if input.button_down {
+    make_move(8, 8, 2)  // Example move for player 2 at (8,8)
+  }
+
+  // Check if there is a winner
+  let winner = check_winner()
+  if winner != 0 {
+    if winner == 1 {
+      @wasm4.text("Player 1 wins!", 50, 50)
+    } else {
+      @wasm4.text("Player 2 wins!", 50, 50)
+    }
+  } else {
+    // Continue drawing the board
+    draw_board()
+  }
+}
