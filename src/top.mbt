@@ -62,31 +62,49 @@
 let screen_size : Int = 160
 let cell_size : Int = 16
 let board_size : Int = 15
-let mut board = @Array.init(board_size * board_size, 0) // 0: empty, 1: player1, 2: player2
+// let mut board = @Array.init(board_size * board_size, 0) // 0: empty, 1: player1, 2: player2
+let board:Array[Int][Int]= @Array.init(board_size * board_size, 0) // 0: empty, 1: player1, 2: player2
+
 
 // Draw the game board
 pub fn draw_board() -> Unit {
-  for y in 0..board_size {
-    for x in 0..board_size {
-      let cell_value = board[y * board_size + x]
-      if cell_value == 1 {
-        @wasm4.set_draw_colors(0x0U, 0x4U) // Player 1 color
-        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
-      } else if cell_value == 2 {
-        @wasm4.set_draw_colors(0x0U, 0x1U) // Player 2 color
-        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
-      }
-      @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size) // Grid lines
-    }
-  }
+    // for y in 0..board_size {
+  for y=0;y<=board_size;y=y+1{
+    // for x in 0..board_size {
+    for x=0;x<board_size;x=x+1{
+      let cell_value = board[y * board_size + x]
+      if cell_value == 1 {
+        @wasm4.set_draw_colors(index=0x0U, 0x4U) // Player 1 color
+        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+      } else if cell_value == 2 {
+        @wasm4.set_draw_colors(index=0x0U, 0x1U) // Player 2 color
+        @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+      }
+      @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size) // Grid lines
+    }
+  }
 }
+  //   for y in 0..board_size {
+  //   for x in 0..board_size {
+  //     let cell_value = board[y * board_size + x]
+  //     if cell_value == 1 {
+  //       @wasm4.set_draw_colors(0x0U, 0x4U) // Player 1 color
+  //       @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+  //     } else if cell_value == 2 {
+  //       @wasm4.set_draw_colors(0x0U, 0x1U) // Player 2 color
+  //       @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size)
+  //     }
+  //     @wasm4.rect(x * cell_size, y * cell_size, cell_size, cell_size) // Grid lines
+  //   }
+  // }
+// }
 
 // Check if there is a winner
 pub fn check_winner() -> Int {
-  for y in 0..board_size {
-    for x in 0..board_size {
-      let cell_value = board[y * board_size + x]
-      if cell_value != 0 {
+for y in 0..board_size {
+for x in 0..board_size {
+let cell_value = board[y * board_size + x]
+if cell_value != 0 {
         // Horizontal check
         if x + 4 < board_size {
           if board[y * board_size + x] == board[y * board_size + x + 1] &&
