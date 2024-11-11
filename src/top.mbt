@@ -429,8 +429,8 @@ pub fn person_computer_random()->Unit {
             // @wasm4.text("black xia:", 10, 10);
                 if mouse.left{
                         if chessboard[mouse.x/10][mouse.y/10] ==white||chessboard[mouse.x/10][mouse.y/10] ==black{
-                            // @wasm4.text("no place", 10, 10);
-                            // continue;
+                            @wasm4.text("no place", 10, 10);
+                            continue;
                         }
                                     chessboard[mouse.x/10][mouse.y/10] = black;
                                     draw_chessman(chessboard);
