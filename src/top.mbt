@@ -442,6 +442,7 @@ pub fn person_computer_random()->Unit {
                 // @wasm4.text("black win", 10, 10);
                  game.game_state="kaishi"
                 break;
+                //测试一下
             }
         }
           if step % 2 == 0&&place==true{
